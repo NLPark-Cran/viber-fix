@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "layout",
+      "name": "布局",
+      "terms": [
+        {
+          "name": "瀑布流布局",
+          "prompt": "masonry / waterfall layout, staggered multi-column cards with varying heights",
+          "desc": "参差不齐的多列卡片流,适合图文内容",
+          "fits": ["cardlist", "region"]
+        },
+        {
+          "name": "Bento 网格",
+          "prompt": "bento grid layout, mixed-size rounded cells with clear spacing",
+          "desc": "便当盒式大小混排网格,信息分区清晰",
+          "fits": ["cardlist", "region"]
+        },
+        {
+          "name": "卡片式布局",
+          "prompt": "card-based layout with consistent elevation and rounded corners",
+          "desc": "统一圆角与投影的独立卡片",
+          "fits": ["cardlist", "region"]
+        },
+        {
+          "name": "杂志分栏",
+          "prompt": "editorial magazine layout, asymmetric columns with pull quotes",
+          "desc": "杂志式不对称分栏,强编辑感",
+          "fits": ["region", "article"]
+        },
+        {
+          "name": "居中单栏",
+          "prompt": "centered single column with generous line length and whitespace",
+          "desc": "聚焦阅读的窄单栏,大量留白",
+          "fits": ["article", "region"]
+        },
+        {
+          "name": "时间轴布局",
+          "prompt": "vertical timeline layout with milestone nodes",
+          "desc": "纵向时间线串联内容节点",
+          "fits": ["list", "region"]
+        },
+        {
+          "name": "吸顶悬浮",
+          "prompt": "sticky floating element that follows scroll",
+          "desc": "滚动时吸附悬浮,常驻可见",
+          "fits": ["sidebar", "navbar"]
+        }
+      ]
+    },
+    {
+      "id": "style",
+      "name": "风格",
+      "terms": [
+        {
+          "name": "新拟态",
+          "prompt": "neumorphism: soft dual shadows (light & dark) on same-color background, extruded look",
+          "desc": "同色系双阴影的浮雕质感,柔和低调",
+          "fits": ["sidebar", "card", "button", "region"]
+        },
+        {
+          "name": "玻璃拟态",
+          "prompt": "glassmorphism: frosted glass with backdrop-blur, translucent panels, subtle borders",
+          "desc": "毛玻璃半透明悬浮感",
+          "fits": ["sidebar", "navbar", "card", "modal", "region"]
+        },
+        {
+          "name": "极简留白",
+          "prompt": "minimalism: generous whitespace, restrained color, clear typographic hierarchy",
+          "desc": "大留白、克制的颜色与信息层级",
+          "fits": ["region", "article", "navbar"]
+        },
+        {
+          "name": "粗野主义",
+          "prompt": "neo-brutalism: thick borders, hard offset shadows, raw bold typography, high contrast",
+          "desc": "粗边框硬阴影大字重,个性强烈",
+          "fits": ["card", "banner", "button", "region"]
+        },
+        {
+          "name": "扁平化",
+          "prompt": "flat design: no gradients or shadows, solid colors and crisp edges",
+          "desc": "无渐变无投影的纯色块",
+          "fits": ["region", "button", "navbar"]
+        },
+        {
+          "name": "质感拟物",
+          "prompt": "subtle skeuomorphism: realistic textures, soft gradients and depth",
+          "desc": "带材质纹理与真实光影的拟物风",
+          "fits": ["card", "button", "region"]
+        },
+        {
+          "name": "暗黑模式",
+          "prompt": "dark mode with layered dark grays and glowing accent color",
+          "desc": "深灰分层 + 亮色强调的暗色界面",
+          "fits": ["page", "region", "sidebar"]
+        },
+        {
+          "name": "科技感",
+          "prompt": "techy futuristic: neon accents, grid lines, glow effects, dark background",
+          "desc": "霓虹线条网格光效,赛博感",
+          "fits": ["banner", "card", "region"]
+        }
+      ]
+    },
+    {
+      "id": "color",
+      "name": "色彩",
+      "terms": [
+        {
+          "name": "莫兰迪低饱和",
+          "prompt": "Morandi palette: muted low-saturation tones, grayish pastels",
+          "desc": "灰调低饱和的柔和配色",
+          "fits": ["page", "region", "card"]
+        },
+        {
+          "name": "渐变色点缀",
+          "prompt": "tasteful gradient accents on key elements only",
+          "desc": "关键元素用渐变提亮,其余保持克制",
+          "fits": ["button", "banner", "card"]
+        },
+        {
+          "name": "高对比撞色",
+          "prompt": "bold complementary color contrast for emphasis",
+          "desc": "互补撞色制造视觉焦点",
+          "fits": ["banner", "button", "region"]
+        },
+        {
+          "name": "单色系层次",
+          "prompt": "monochromatic scheme with tonal steps for depth",
+          "desc": "同一色相的明暗阶梯,层次分明",
+          "fits": ["sidebar", "region", "card"]
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "name": "字体排版",
+      "terms": [
+        {
+          "name": "衬线大标题",
+          "prompt": "large serif display heading for editorial feel",
+          "desc": "用衬线字体做大标题,杂志感",
+          "fits": ["banner", "article", "region"]
+        },
+        {
+          "name": "字重层级",
+          "prompt": "strong typographic hierarchy via weight contrast (bold title / regular body)",
+          "desc": "靠字重对比拉开标题与正文层级",
+          "fits": ["article", "region", "list"]
+        },
+        {
+          "name": "加大行距留白",
+          "prompt": "increased line-height and paragraph spacing for readability",
+          "desc": "放大行距段距,阅读更松弛",
+          "fits": ["article", "region"]
+        }
+      ]
+    },
+    {
+      "id": "motion",
+      "name": "动效",
+      "terms": [
+        {
+          "name": "卡片悬浮抬升",
+          "prompt": "cards lift with deeper shadow on hover, smooth transition",
+          "desc": "hover 时卡片抬升加深投影",
+          "fits": ["card", "cardlist"]
+        },
+        {
+          "name": "骨架屏加载",
+          "prompt": "skeleton shimmer loading placeholders",
+          "desc": "加载时显示流光骨架占位",
+          "fits": ["cardlist", "list", "region"]
+        },
+        {
+          "name": "渐入滚动动画",
+          "prompt": "elements fade in and slide up on scroll into view",
+          "desc": "元素滚动进入视口时淡入上移",
+          "fits": ["cardlist", "region", "article"]
+        },
+        {
+          "name": "视差滚动",
+          "prompt": "parallax scrolling between background and foreground layers",
+          "desc": "背景与前景不同速度的层次感",
+          "fits": ["banner", "region"]
+        },
+        {
+          "name": "微交互反馈",
+          "prompt": "micro-interactions: button press scale, ripple, state transitions",
+          "desc": "按压缩放、涟漪等即时反馈",
+          "fits": ["button", "navbar", "card"]
+        }
+      ]
+    }
+  ],
+  "rolePresets": {
+    "sidebar": [
+      "换成新拟态侧边栏",
+      "换成玻璃拟态侧边栏",
+      "改成可折叠悬浮侧边栏",
+      "简化为纯图标导航栏"
+    ],
+    "navbar": [
+      "换成玻璃拟态吸顶导航",
+      "简化菜单项并突出主按钮",
+      "改为居中大 Logo 布局"
+    ],
+    "banner": [
+      "改成大标题 + 渐入动画的首屏",
+      "加视差滚动背景",
+      "精简文案突出单一 CTA"
+    ],
+    "cardlist": [
+      "换成瀑布流布局",
+      "换成 Bento 网格",
+      "卡片加 hover 抬升动效",
+      "统一卡片圆角和间距"
+    ],
+    "footer": ["简化为一行版权信息", "改成多列链接导航"],
+    "modal": ["换成玻璃拟态弹层", "减弱遮罩加深内容对比"],
+    "button": ["加微交互反馈", "改成高对比主色按钮"],
+    "article": ["改成居中单栏 + 衬线大标题", "加大行距留白"],
+    "region": ["这里 AI 味太重,改得更有设计感", "整体太平淡,增强视觉层次"]
+  }
+}

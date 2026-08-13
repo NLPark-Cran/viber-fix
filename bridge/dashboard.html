@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ViberFix 控制台</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #181b25;
+    --border: #262b3a;
+    --text: #e8eaf0;
+    --dim: #8b91a5;
+    --accent: #6c8cff;
+    --green: #3ecf8e;
+    --red: #ff6b6b;
+    --yellow: #f5c451;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  h1 { font-size: 22px; font-weight: 700; }
+  h1 .logo { color: var(--accent); }
+  .sub { color: var(--dim); font-size: 13px; margin-bottom: 24px; }
+  .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filters button {
+    background: var(--card); color: var(--dim); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 16px; font-size: 13px; cursor: pointer;
+  }
+  .filters button.active { color: var(--text); border-color: var(--accent); background: rgba(108,140,255,.12); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .shot { background: #0a0c10; display: flex; align-items: center; justify-content: center; min-height: 120px; }
+  .shot img { max-width: 100%; max-height: 220px; object-fit: contain; display: block; }
+  .noshot { color: var(--dim); font-size: 12px; padding: 24px; }
+  .body { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+  .badge { border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
+  .b-pending   { background: rgba(245,196,81,.15); color: var(--yellow); }
+  .b-picked_up { background: rgba(108,140,255,.15); color: var(--accent); }
+  .b-done      { background: rgba(62,207,142,.15); color: var(--green); }
+  .b-failed    { background: rgba(255,107,107,.15); color: var(--red); }
+  .type { color: var(--dim); }
+  .id { color: var(--dim); font-family: Consolas, monospace; margin-left: auto; }
+  .comment { font-size: 14px; line-height: 1.5; }
+  .comment.empty { color: var(--dim); font-style: italic; }
+  .terms { display: flex; gap: 6px; flex-wrap: wrap; }
+  .term { background: rgba(108,140,255,.1); color: var(--accent); border-radius: 6px; padding: 2px 8px; font-size: 11px; }
+  .detail { color: var(--dim); font-size: 12px; word-break: break-all; }
+  .summary { font-size: 12px; color: var(--green); border-top: 1px dashed var(--border); padding-top: 8px; }
+  .empty-tip { color: var(--dim); text-align: center; padding: 80px 0; font-size: 14px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="logo">◆</span> ViberFix 控制台</h1>
+  </header>
+  <div class="sub">
+    <span class="status-dot" id="dot" style="background:var(--yellow)"></span>
+    <span id="statusText">连接中…</span>
+    &nbsp;·&nbsp; 桥接服务运行在本机,插件框选的整改请求会实时出现在这里
+  </div>
+  <div class="filters" id="filters">
+    <button data-f="" class="active">全部</button>
+    <button data-f="pending">待处理</button>
+    <button data-f="picked_up">处理中</button>
+    <button data-f="done">已完成</button>
+    <button data-f="failed">失败</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty-tip" id="empty" style="display:none">暂无请求 —— 去页面上点击插件图标,框选一个想改的元素试试</div>
+</div>
+<script>
+  let filter = '';
+  const STATUS = {
+    pending: ['待处理', 'b-pending'],
+    picked_up: ['处理中', 'b-picked_up'],
+    done: ['已完成', 'b-done'],
+    failed: ['失败', 'b-failed'],
+  };
+  const TYPE = { fix: '整改', style_suggestion: 'AI 推荐样式', preview_image: '生图预览' };
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+  }
+
+  function render(list) {
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    grid.innerHTML = '';
+    empty.style.display = list.length ? 'none' : 'block';
+    for (const r of list) {
+      const [label, cls] = STATUS[r.status] || [r.status, ''];
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <div class="shot">${r.screenshotUrl
+          ? `<img src="${esc(r.screenshotUrl)}" alt="screenshot">`
+          : '<div class="noshot">无截图</div>'}</div>
+        <div class="body">
+          <div class="meta">
+            <span class="badge ${cls}">${label}</span>
+            <span class="type">${TYPE[r.type] || r.type}${r.roleGuess ? ' · ' + esc(r.roleGuess) : ''}</span>
+            <span class="id">#${esc(r.id.slice(-5))}</span>
+          </div>
+          <div class="comment ${r.comment ? '' : 'empty'}">${r.comment ? esc(r.comment) : '(未填写意见)'}</div>
+          ${r.terms && r.terms.length ? `<div class="terms">${r.terms.map((t) => `<span class="term">${esc(t)}</span>`).join('')}</div>` : ''}
+          <div class="detail">${esc(r.pageUrl)}</div>
+          ${r.summary ? `<div class="summary">✓ ${esc(r.summary)}</div>` : ''}
+          ${r.previewUrl ? `<div class="shot" style="margin-top:6px;border-radius:8px"><img src="${esc(r.previewUrl)}"></div>` : ''}
+        </div>`;
+      grid.appendChild(div);
+    }
+  }
+
+  async function tick() {
+    const dot = document.getElementById('dot');
+    const st = document.getElementById('statusText');
+    try {
+      const h = await fetch('/health').then((r) => r.json());
+      dot.style.background = 'var(--green)';
+      st.textContent = `服务在线 v${h.version}`;
+      const qs = filter ? `?status=${filter}` : '';
+      const data = await fetch('/api/requests' + qs).then((r) => r.json());
+      render(data.requests || []);
+    } catch {
+      dot.style.background = 'var(--red)';
+      st.textContent = '服务未响应';
+    }
+  }
+
+  document.getElementById('filters').addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') return;
+    document.querySelectorAll('#filters button').forEach((b) => b.classList.remove('active'));
+    e.target.classList.add('active');
+    filter = e.target.dataset.f;
+    tick();
+  });
+
+  tick();
+  setInterval(tick, 3000);
+</script>
+</body>
+</html>

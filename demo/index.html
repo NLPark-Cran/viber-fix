@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Acme Studio — Vibe 出的示例页</title>
+<style>
+  /* 一个典型的「vibe 出来的」页面:功能齐全但设计平淡,正好拿来体验 ViberFix */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #f6f7fb; color: #222; }
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 240px; background: #fff; border-right: 1px solid #e3e6ef; padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .sidebar .logo { font-weight: 700; font-size: 17px; padding: 6px 12px 18px; }
+  .sidebar a { color: #555; text-decoration: none; font-size: 14px; padding: 9px 12px; border-radius: 8px; }
+  .sidebar a.active, .sidebar a:hover { background: #eef1fb; color: #333; }
+  main { flex: 1; display: flex; flex-direction: column; }
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; border-bottom: 1px solid #e3e6ef; padding: 14px 28px;
+  }
+  .navbar .menu { display: flex; gap: 22px; font-size: 14px; color: #555; }
+  .navbar .cta { background: #4a6cf7; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-size: 13px; }
+  .hero { padding: 56px 40px; background: #eef1fb; text-align: center; }
+  .hero h1 { font-size: 34px; margin-bottom: 12px; }
+  .hero p { color: #666; font-size: 15px; max-width: 560px; margin: 0 auto 22px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 32px 40px; }
+  .card { background: #fff; border: 1px solid #e3e6ef; border-radius: 8px; padding: 20px; }
+  .card h3 { font-size: 15px; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: #777; line-height: 1.6; }
+  footer { padding: 22px 40px; color: #999; font-size: 12px; border-top: 1px solid #e3e6ef; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="logo">◆ Acme Studio</div>
+    <a href="#" class="active">工作台</a>
+    <a href="#">项目</a>
+    <a href="#">素材库</a>
+    <a href="#">团队协作</a>
+    <a href="#">数据报表</a>
+    <a href="#">设置</a>
+  </aside>
+  <main>
+    <nav class="navbar">
+      <div class="menu"><span>产品</span><span>方案</span><span>定价</span><span>文档</span></div>
+      <button class="cta">免费试用</button>
+    </nav>
+    <section class="hero">
+      <h1>让创意更快上线</h1>
+      <p>Acme Studio 帮助小团队快速搭建、迭代和发布自己的产品页面,无需深厚设计背景。</p>
+      <button class="cta" style="padding:10px 26px;font-size:14px">立即开始</button>
+    </section>
+    <section class="cards">
+      <div class="card"><h3>模板中心</h3><p>上百套现成模板,覆盖官网、后台、活动页等常见场景,一键套用。</p></div>
+      <div class="card"><h3>实时协作</h3><p>多人同时编辑,评论与版本历史一应俱全,团队协作不再来回传文件。</p></div>
+      <div class="card"><h3>一键发布</h3><p>绑定自定义域名,自动 HTTPS 与 CDN 加速,发布只需一次点击。</p></div>
+      <div class="card"><h3>数据洞察</h3><p>内置访问统计与转化漏斗,页面效果一目了然,迭代有据可依。</p></div>
+      <div class="card"><h3>素材管理</h3><p>图片、图标、字体统一管理,团队共享,告别混乱的本地文件夹。</p></div>
+      <div class="card"><h3>开放接口</h3><p>提供 API 与 Webhook,把页面数据接入你已有的工作流与系统。</p></div>
+    </section>
+    <footer>© 2026 Acme Studio · 保留所有权利</footer>
+  </main>
+</div>
+</body>
+</html>

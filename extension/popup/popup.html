@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  body { width: 340px; background: #14161f; color: #e8eaf0; padding: 16px; }
+  h1 { font-size: 15px; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  h1 .logo { color: #6c8cff; }
+  .sub { font-size: 11px; color: #8b91a5; margin-bottom: 14px; }
+  .row { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 10px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #f5c451; flex: none; }
+  .dot.on { background: #3ecf8e; } .dot.off { background: #ff6b6b; }
+  .label { font-size: 11px; color: #8b91a5; margin: 12px 0 5px; letter-spacing: .5px; }
+  input[type=text] {
+    width: 100%; background: #0d0f16; border: 1px solid #2c3245; border-radius: 8px;
+    color: #e8eaf0; font-size: 12px; padding: 8px 10px; outline: none;
+  }
+  input[type=text]:focus { border-color: #6c8cff; }
+  .hint { font-size: 11px; color: #5d6377; margin-top: 4px; line-height: 1.5; }
+  .btns { display: flex; gap: 8px; margin-top: 16px; }
+  button {
+    flex: 1; border: 1px solid #2c3245; background: #1e2230; color: #e8eaf0;
+    font-size: 12.5px; padding: 9px 0; border-radius: 9px; cursor: pointer;
+  }
+  button:hover { border-color: #6c8cff; }
+  button.primary { background: #6c8cff; border-color: #6c8cff; color: #fff; font-weight: 600; }
+  button.primary:hover { background: #5a7bf0; }
+  .queue { margin-top: 14px; border-top: 1px solid #262b3a; padding-top: 12px; }
+  .q-item { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 6px 0; color: #aab0c5; }
+  .badge { border-radius: 999px; padding: 1px 8px; font-size: 10px; font-weight: 600; flex: none; }
+  .b-pending { background: rgba(245,196,81,.15); color: #f5c451; }
+  .b-picked_up { background: rgba(108,140,255,.15); color: #8da5ff; }
+  .b-done { background: rgba(62,207,142,.15); color: #3ecf8e; }
+  .b-failed { background: rgba(255,107,107,.15); color: #ff6b6b; }
+  .q-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  .empty { font-size: 12px; color: #5d6377; padding: 8px 0; }
+  .err-tip { font-size: 11px; color: #ff6b6b; margin-top: 8px; line-height: 1.6; display: none; }
+  code { background: #0d0f16; padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1><span class="logo">◆</span> ViberFix</h1>
+  <div class="sub">框选不满意的元素,把整改意见直接发给 Agent</div>
+
+  <div class="row">
+    <span class="dot" id="dot"></span>
+    <span id="bridgeText">正在检测桥接服务…</span>
+  </div>
+  <div class="err-tip" id="errTip">
+    桥接服务未启动。在项目目录运行:<br><code>node bridge/server.js</code>
+  </div>
+
+  <div class="label">页面源码所在目录(整改时 Agent 会在这里找文件)</div>
+  <input type="text" id="projectPath" placeholder="例如 D:\projects\my-site" />
+
+  <div class="label">桥接服务地址</div>
+  <input type="text" id="bridgeUrl" placeholder="http://127.0.0.1:8787" />
+  <div class="hint">设置会自动保存;改完地址按下面按钮前会自动生效。</div>
+
+  <div class="btns">
+    <button class="primary" id="startBtn">◇ 开始框选</button>
+    <button id="dashBtn">打开控制台</button>
+  </div>
+
+  <div class="queue">
+    <div class="label" style="margin-top:0">最近的整改请求</div>
+    <div id="queueList"><div class="empty">加载中…</div></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
