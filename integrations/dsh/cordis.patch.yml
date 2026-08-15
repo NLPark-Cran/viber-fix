@@ -1,0 +1,10 @@
+# dsh-viberfix bundle patch
+# 向 dsh 插件树插入一行,挂载 ViberFix 工具插件。
+# 用户可在 profile 的 cordis.patch.yml 里按 id 覆盖 config(如改 bridgeUrl)。
+# 格式遵循 deepseek-harness 的 bundle patch schema(参见 packages/bundle/base/cordis.patch.yml)。
+
+- insert:
+    - id: viberfix-tools
+      name: 'dsh-viberfix'
+      config:
+        bridgeUrl: 'http://127.0.0.1:8787'

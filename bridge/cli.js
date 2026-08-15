@@ -11,6 +11,7 @@
  *   node cli.js fail <id> [原因...]              标记为失败并附原因
  *   node cli.js respond <id> <suggestionsJson>  回传 AI 样式推荐
  *   node cli.js preview <id> <图片文件路径> [备注]  回传生图预览(直接读本地图片文件)
+ *   node cli.js trace [limit]                     查看执行轨迹(可观测证据)
  */
 
 'use strict';
@@ -150,6 +151,14 @@ async function main() {
         const dataUrl = `data:${mime};base64,${fs.readFileSync(abs).toString('base64')}`;
         const r = await request('POST', `/api/requests/${id}/preview`, { image: dataUrl, note });
         console.log(r.body.ok ? `#${id} 预览图已回传: ${r.body.previewUrl}` : JSON.stringify(r.body));
+        break;
+      }
+      case 'trace': {
+        const limit = parseInt(rest[0] || '50', 10) || 50;
+        const r = await request('GET', `/api/trace?limit=${limit}`);
+        const events = r.body.events || [];
+        if (!events.length) console.log('暂无轨迹记录');
+        else console.log(JSON.stringify(events, null, 2));
         break;
       }
       default:

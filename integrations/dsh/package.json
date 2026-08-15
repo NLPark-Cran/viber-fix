@@ -1,0 +1,18 @@
+{
+  "name": "dsh-viberfix",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness (DSH) 生态插件:把 ViberFix 整改队列接入 dsh 工具层,Agent 循环可直接消费浏览器框选反馈",
+  "type": "module",
+  "license": "MIT",
+  "keywords": ["dsh-plugin", "viberfix", "agent", "frontend", "feedback"],
+  "dsh": {
+    "bundle": {
+      "patch": "cordis.patch.yml"
+    }
+  },
+  "main": "src/index.js",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-tools": "*"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "viberfix": {
+      "command": "node",
+      "args": ["D:/workspace/viber/bridge/mcp-server.js"],
+      "env": {
+        "VIBEFIX_HOST": "127.0.0.1",
+        "VIBEFIX_PORT": "8787"
+      }
+    }
+  }
+}

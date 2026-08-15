@@ -79,6 +79,20 @@ skill/
 
 术语带英文 prompt 提示(如 `neumorphism: soft dual shadows…`),随请求发给 Agent 作为设计意图关键词。
 
+## 生态协同与参赛
+
+本项目以「**哪里不爽点哪里!**」参加 **世界人工智能开源大赛(GOAI)· Agent Infra 赛道 · 方向三:软件研发全流程协同**,队伍:**猹码古道**。多 Agent 协同设计以 [AgentTeams](https://github.com/agentscope-ai/AgentTeams)(原名 Hiclaw)为基点,完整设计见 [docs/competition-design.md](docs/competition-design.md)。
+
+同一整改队列有三条接入路径,状态完全一致:
+
+| 路径 | 接入方 | 入口 |
+|---|---|---|
+| QwenWork skill | 千问办公 Agent | `skill/SKILL.md`(已安装为 viber-fix) |
+| MCP server | [cran-code 猹询码](https://github.com/NLPark-Cran/cran-code) 及任意 MCP 客户端 | `bridge/mcp-server.js`,配置见 `integrations/cran-code/` |
+| DSH 插件 | [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Agent 循环 | `integrations/dsh/`(dsh-plugin) |
+
+五个职能 Agent:哨兵(反馈聚合)→ 调度(Manager)→ 巧匠(根因定位+自动编码)→ 验收(测试+预览对比+人工确认)→ 沉淀(复盘+术语库演进)。执行轨迹见 `node bridge/cli.js trace`。
+
 ## 已知限制 / 后续
 
 - iframe 内的元素暂不支持框选(只注入顶层文档)

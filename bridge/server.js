@@ -30,6 +30,18 @@ for (const dir of [DATA_DIR, REQ_DIR, UPLOAD_DIR]) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+const TRACE_FILE = path.join(DATA_DIR, 'trace.jsonl');
+
+/** 可观测:追加执行轨迹事件(JSONL),作为运行证据 */
+function trace(event, fields) {
+  try {
+    const rec = { ts: nowIso(), event, ...(fields || {}) };
+    fs.appendFileSync(TRACE_FILE, JSON.stringify(rec) + '\n');
+  } catch {
+    /* 轨迹写入失败不应影响主流程 */
+  }
+}
+
 /* ---------------- 工具函数 ---------------- */
 
 function nowIso() {
@@ -225,6 +237,7 @@ async function handle(req, res) {
       summary: '', // Agent 完成后的总结
     };
     saveReq(rec);
+    trace('request.created', { id, type: rec.type, roleGuess: rec.roleGuess, pageUrl: rec.pageUrl });
     console.log(`[viberfix] new request #${id} type=${rec.type} role=${rec.roleGuess || '-'} url=${rec.pageUrl}`);
     return json(res, 200, { ok: true, id, screenshotUrl: screenshotFile ? `/api/uploads/${screenshotFile}` : null });
   }
@@ -258,6 +271,7 @@ async function handle(req, res) {
     }
     if (body.summary) rec.summary = String(body.summary);
     saveReq(rec);
+    trace('status.changed', { id: rec.id, status: rec.status, summary: rec.summary || undefined });
     console.log(`[viberfix] #${rec.id} -> ${rec.status}`);
     return json(res, 200, { ok: true, id: rec.id, status: rec.status });
   }
@@ -279,6 +293,7 @@ async function handle(req, res) {
       at: nowIso(),
     };
     saveReq(rec);
+    trace('response.sent', { id: rec.id, suggestions: rec.response.suggestions.length });
     return json(res, 200, { ok: true });
   }
 
@@ -315,7 +330,28 @@ async function handle(req, res) {
     if (!file) return json(res, 400, { error: 'need image(dataURL) or imagePath' });
     rec.preview = { image: file, note: body.note || '', at: nowIso() };
     saveReq(rec);
+    trace('preview.sent', { id: rec.id, file });
     return json(res, 200, { ok: true, previewUrl: `/api/uploads/${file}` });
+  }
+
+  /* --- 执行轨迹(可观测证据) --- */
+  if (method === 'GET' && p === '/api/trace') {
+    let lines = [];
+    try {
+      lines = fs.readFileSync(TRACE_FILE, 'utf8').trim().split('\n').filter(Boolean);
+    } catch {
+      lines = [];
+    }
+    lines.reverse();
+    const limit = Math.min(parseInt(parsed.query.limit || '100', 10) || 100, 1000);
+    const events = lines.slice(0, limit).map((l) => {
+      try {
+        return JSON.parse(l);
+      } catch {
+        return null;
+      }
+    }).filter(Boolean);
+    return json(res, 200, { events });
   }
 
   json(res, 404, { error: 'unknown endpoint', path: p });

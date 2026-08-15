@@ -1,3 +1,5 @@
 node_modules/
 bridge/data/
 *.log
+contest/qa/
+contest/proposal.pdf
